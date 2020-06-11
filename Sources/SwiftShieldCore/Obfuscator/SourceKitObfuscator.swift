@@ -190,26 +190,34 @@ extension SourceKitObfuscator {
             throw error
         }
     }
-
+    
+    /// 混淆方法
+    /// 再次基础上
+    //FIXME: 自定义混淆规则
     func obfuscate(name: String) -> String {
         let cachedResult = dataStore.obfuscationDictionary[name]
         guard cachedResult == nil else {
             return cachedResult!
         }
-        let size = 32
-        let letters: [Character] = Array("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
-        let numbers: [Character] = Array("0123456789")
-        let lettersAndNumbers = letters + numbers
+//        let size = 32
+//        let letters: [Character] = Array("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+//        let numbers: [Character] = Array("0123456789")
+//        let lettersAndNumbers = letters + numbers
         var randomString = ""
-        for i in 0 ..< size {
-            let characters: [Character] = i == 0 ? letters : lettersAndNumbers
-            let rand = Int.random(in: 0 ..< characters.count)
-            let nextChar = characters[rand]
-            randomString.append(nextChar)
-        }
-        guard dataStore.obfuscatedNames.contains(randomString) == false else {
-            return obfuscate(name: name)
-        }
+//        for i in 0 ..< size {
+//            let characters: [Character] = i == 0 ? letters : lettersAndNumbers
+//            let rand = Int.random(in: 0 ..< characters.count)
+//            let nextChar = characters[rand]
+//            randomString.append(nextChar)
+//        }
+//        guard dataStore.obfuscatedNames.contains(randomString) == false else {
+//            return obfuscate(name: name)
+//        }
+        /*   自定义混淆规则    */
+        let prefix = "BF_"
+        let suffix = "_Flipped"
+        randomString = prefix + name + suffix
+        
         dataStore.obfuscatedNames.insert(randomString)
         dataStore.obfuscationDictionary[name] = randomString
         return randomString

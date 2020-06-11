@@ -8,7 +8,8 @@ public enum SwiftSwiftAssembler {
         ignorePublic: Bool,
         dryRun: Bool,
         verbose: Bool,
-        printSourceKitQueries: Bool
+        printSourceKitQueries: Bool,
+        blackListFilePath: String?
     ) -> SwiftShieldController {
         let logger = Logger(
             verbose: verbose,
@@ -33,6 +34,14 @@ public enum SwiftSwiftAssembler {
             ignorePublic: ignorePublic
         )
 
+        /// 读取 黑名单列表
+        let file = File(path: blackListFilePath ?? "")
+        if let content = try? file.read() {
+            let arr = content.components(separatedBy: .newlines).filter { $0.trimmingCharacters(in: .whitespaces).isEmpty }
+            obfuscator.dataStore.obfuscationBlackList = Set<String>(arr)
+            obfuscator.logger.log("------------obfuscationBlackList读取完毕(\(obfuscator.dataStore.obfuscationBlackList.count))--------------")
+        }
+        
         let interactor = SwiftShieldInteractor(
             schemeInfoProvider: infoProvider,
             logger: logger,

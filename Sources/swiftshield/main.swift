@@ -32,6 +32,9 @@ extension Swiftshield {
         @Flag(help: "Prints SourceKit queries. Note that they are huge, so use this only for bug reports and development!")
         var printSourcekit: Bool
 
+        @Option(name: .shortAndLong, help: "忽略变量/方法.黑名单(传入FilePath)")
+        var blackList: String?
+        
         func run() throws {
             let modulesToIgnore = Set((ignoreTargets ?? "").components(separatedBy: ","))
             let runner = SwiftSwiftAssembler.generate(
@@ -40,7 +43,8 @@ extension Swiftshield {
                 ignorePublic: ignorePublic,
                 dryRun: dryRun,
                 verbose: verbose,
-                printSourceKitQueries: printSourcekit
+                printSourceKitQueries: printSourcekit,
+                blackListFilePath: blackList
             )
             try runner.run()
         }
