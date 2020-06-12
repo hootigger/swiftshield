@@ -199,6 +199,12 @@ extension SourceKitObfuscator {
         guard cachedResult == nil else {
             return cachedResult!
         }
+        guard dataStore.obfuscationBlackList.contains(name) == false else {
+            logger.log("------------------------------------------", verbose: true)
+            logger.log("-----------\(name),黑名单忽略---------------", verbose: true)
+            logger.log("------------------------------------------", verbose: true)
+            return name
+        }
 //        let size = 32
 //        let letters: [Character] = Array("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 //        let numbers: [Character] = Array("0123456789")
